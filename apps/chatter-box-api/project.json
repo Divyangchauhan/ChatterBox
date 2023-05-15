@@ -1,0 +1,64 @@
+{
+  "name": "chatter-box-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/chatter-box-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/chatter-box-api",
+        "main": "apps/chatter-box-api/src/main.ts",
+        "tsConfig": "apps/chatter-box-api/tsconfig.app.json",
+        "assets": ["apps/chatter-box-api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/chatter-box-api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "chatter-box-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "chatter-box-api:build:development"
+        },
+        "production": {
+          "buildTarget": "chatter-box-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/chatter-box-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/chatter-box-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
